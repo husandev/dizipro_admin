@@ -2,8 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: #f6f6f6;
+  font-family: 'Inter', sans-serif;
 }
 
 a {
@@ -15,12 +15,36 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+ul,li,h1,h2,h3,h4,h5{
+  padding: 0;
+  margin: 0;
+}
+
+table {
+  border-collapse: separate !important;
+  border-spacing: 0;
+}
+
+.rowBorderStart {
+  border: 1px solid #f1f1f2 !important;
+  border-right: 0px !important;
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+}
+
+.rowBorderMiddle {
+  border: 1px solid #f1f1f2 !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+
+.rowBorderEnd {
+  border: 1px solid #f1f1f2 !important;
+  border-left: 0px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+}
+
+.Mui-selected{
+  color: #01605a !important;
 }
