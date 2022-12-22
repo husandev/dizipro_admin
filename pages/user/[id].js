@@ -15,6 +15,8 @@ function User() {
     const dispatch = useDispatch()
     const get_user_status = useSelector((state) => state.get_user.status)
     
+
+    
     console.log(SingleUser);
 
     useEffect(()=> {
@@ -34,7 +36,7 @@ function User() {
                             <CustomTypegraphy text={`${SingleUser?.first_name} ${SingleUser?.last_name}`} class="user_name" component="h2"></CustomTypegraphy>
                             <CustomTypegraphy text={`#${SingleUser?.user_id}`} class="user_id" component="h3"></CustomTypegraphy>
                         </Box>
-                        <CustomBtn text="" class="user_dots" icon={<Image  src="/icons/DotsThree.svg" width={32} height={32} alt="threeDots"/>} />
+                        <CustomBtn text="" class="user_dots" icon={<Image style={{transform: "rotate(90deg)"}}  src="/icons/DotsThree.svg" width={22} height={22} alt="threeDots"/>} />
                     </Box>
                 </Box>
     
@@ -59,6 +61,7 @@ function User() {
                         <CustomTypegraphy text="Ma’lumot kiritilmagan" class="user__info--empty" component="h3"></CustomTypegraphy>
                     </Box>
                 </Box>
+                
                 <Box sx={{background: "#fff",borderRadius:"12px",padding:"20px"}}>
                     <CustomTypegraphy text="Kurslar" class="course__title" component="h3"></CustomTypegraphy>
                      {

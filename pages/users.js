@@ -165,7 +165,7 @@ function Users() {
                                                 <TableCell className='rowBorderEnd' >
                                                     <Box sx={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                                                         <CustomTypegraphy className="table__text" variant={"span"} text={`2 ta`} />
-                                                        <CustomBtn text="" class="table__dots--btn" icon={<Image style={{transform: "rotate(90deg)"}} src="/icons/DotsThree.svg" width={32} height={32} alt="threeDots"/>} />   
+                                                        <CustomBtn text="" class="table__dots--btn" icon={<Image  src="/icons/DotsThree.svg" width={10} height={14} alt="threeDots"/>} />   
                                                     </Box>
                                                                                
                                                 </TableCell>
