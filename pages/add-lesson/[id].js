@@ -36,7 +36,7 @@ function AddLesson() {
       setUrl("")
       setLessonLength("")
       setLessonIndex("")
-      toast.success("Module qo'shildi");
+      toast.success("Darslik qo'shildi");
     }
     else{
       toast.error("Iltimos ma'lumotlarni kiriting!");
