@@ -74,7 +74,7 @@ function addCourse() {
   function FormHandler(e) {
     e.preventDefault()
 
-    if(courseName && description && lessonHour && img && lessonCount && modulesVal.length >= 1 && authorsVal.length >= 1 && categoriesVal && price){
+    if(courseName && description && lessonHour && img && lessonCount && authorsVal.length >= 1 && categoriesVal && price){
       let formData = new FormData();
       console.log(img);
       formData.append("images", img)
@@ -82,11 +82,10 @@ function addCourse() {
       formData.append("description", description)
       formData.append("total_hours", lessonHour)
       formData.append("total_lessons", lessonCount)
-      formData.append("modules", JSON.stringify(modulesVal))
+      // formData.append("modules", JSON.stringify(modulesVal))
       formData.append("authors", JSON.stringify(authorsVal))
       formData.append("category_id", categoriesVal)
       formData.append("price", price)
-
 
       dispatch(addCourses(
         formData
@@ -223,7 +222,7 @@ function addCourse() {
                           
                         </Select>
                       </FormControl>
-                      <FormControl size="small" sx={{width:"100%"}}>
+                      {/* <FormControl size="small" sx={{width:"100%"}}>
                         <InputLabel id="demo-multiple-chip-label" sx={{background:"#fff"}}>Bo'limlar</InputLabel>
                         <Select
                           labelId="demo-multiple-chip-label"
@@ -259,7 +258,7 @@ function addCourse() {
                             </MenuItem>
                           ))}
                         </Select>
-                      </FormControl>
+                      </FormControl> */}
                       {/* <CustomInput label_text={"O'qituchi"} type={"text"} placeholder={"O'qituvchinig to'liq ismini kiriting"}/> */}
                   </Box>
                 </Box>

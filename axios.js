@@ -10,7 +10,7 @@ if(typeof window !== "undefined"){
 const instance = axios.create({
   baseURL: baseUrl,
   headers: {
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOTA3Y2E2NzgtYzMxNS00MGY3LTg1MmItNjAwNzRkNTQ1ODhjIiwidG9rZW5fdHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MjA3NzExNywiZXhwIjoxNjcyMTYzNTE3fQ.ygKMYyiWEHgHwee_H90YJMeRWyys3C8ZqTTsPU8ih4M` 
+    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjUxZTZiYzMtMTFjMi00NmYxLWFmZjEtMzA0MTg2NmU5N2ZkIiwidG9rZW5fdHlwZSI6ImFjY2VzcyIsImlhdCI6MTY3MjczNDc2NywiZXhwIjoxNjczMzM5NTY3fQ.FiC2kKYWb34G4TyI1d22C0FFxsPcPAPsaJsDYncfko0` 
   }
 });
 

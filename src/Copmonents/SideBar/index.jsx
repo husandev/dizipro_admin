@@ -59,7 +59,7 @@ function SideBar() {
         else if(router.pathname === "/"){
             setActive(1)
         }
-        else if(router.pathname === "/courses" || router.pathname === "/add-course"){
+        else if(router.pathname === "/courses" || router.pathname === "/add-course" || router.pathname === "/course/[id]"){
             setActive(7)
         }
     },[])

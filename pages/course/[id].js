@@ -73,35 +73,36 @@ function Course() {
     const [active,setActive] = useState(1)
     const dispatch = useDispatch()
     const router = useRouter()
-
-    console.log(Module);
-
+    
     useEffect(() => {
         if(router.isReady){
             dispatch(getCourse(router.query.id))
-            setModuleId(router.query.id)
         }
     },[router.query.id])
 
+
     useEffect(() => {
         if(courseStatus === "succeeded"){
-            dispatch(getModule(courseData?.course_modules[0].module_id))
+            if(courseData?.modules[0] !== null){
+                dispatch(getModule(courseData?.modules[0]?.id))
+            }
+        
         }
 
-       
     },[courseStatus])
 
     useEffect(()=> {
-     if(courseData){
-        // dispatch(getModule(courseData.course_modules[0].module_id))
-     }
+        if(courseData?.modules[0] !== null){
+            dispatch(getModule(courseData?.modules[0]?.id))
+            setModuleId(courseData?.modules[0]?.id)
+        }
     },[courseData])
 
     function ModuleHandler(item,id) {
         setActive(id)
-        setModuleId(item.module_id)
+        setModuleId(item.id)
         console.log(item,"course");
-        dispatch(getModule(item.module_id))
+        dispatch(getModule(item.id))
     }
 
 
@@ -120,19 +121,21 @@ function Course() {
                         <Grid item xs={3}>
                             <List className='srcoll' sx={{padding:"0",height:"205px",overflowY:"scroll"}}>
                                 {
-                                    courseData?.course_modules?.map((item,i) => (
-                                        <StyledListItem key={item.id} onClick={()=> ModuleHandler(item,i + 1)} className={i + 1 === active ? "module__active" : ""} >
+                                    courseData?.modules[0] !== null ? 
+                                    courseData?.modules?.map((item,i) => (
+                                        <StyledListItem key={item?.id} onClick={()=> ModuleHandler(item,i + 1)} className={i + 1 === active ? "module__active" : ""} >
                                             <Box sx={{display:"flex",alignItems:"center"}}>
                                                 <Image src="/icons/burger.svg" width={16} height={16} alt="menu"/>
-                                                <CustomTypegraphy text={item.module_description} class="module__name"/>
+                                                <CustomTypegraphy text={item?.title} class="module__name"/>
                                             </Box>
                                             <CustomTypegraphy text="7" class="module__lesson"/>
                                         </StyledListItem>
                                     ))
+                                    : null
                                 }
                                
                             </List>
-                            <Link href="/add-module" legacyBehavior >
+                            <Link href={`/add-module/${router.query.id}`} legacyBehavior >
                                 <a>
                                     <CustomBtn class="add__module" text="">
                                         <Image width={20} height={20} src={`/icons/plus.svg`} alt="course"/>
@@ -165,7 +168,7 @@ function Course() {
                                                         {item?.title}
                                                     </TableCell>
                                                     <TableCell className='rowBorderMiddle'  component="th" scope="row">
-                                                        <CustomTypegraphy className="table__id" variant={"span"} text={`${item?.module_id}`} />
+                                                        <CustomTypegraphy className="table__id" variant={"span"} text={`${item?.id}`} />
                                                     </TableCell>
                                                     <TableCell className='rowBorderMiddle' >{item?.seconds}</TableCell>
                                                     <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>

@@ -1,26 +1,31 @@
 import { Box,Grid } from "@mui/material"
-import CustomBtn from "../src/Copmonents/CustomBtn"
-import CustomInput  from "../src/Copmonents/CustomInput"
-import CustomTypegraphy from "../src/Copmonents/CustomTypegraphy"
+import CustomBtn from "../../src/Copmonents/CustomBtn"
+import CustomInput  from "../../src/Copmonents/CustomInput"
+import CustomTypegraphy from "../../src/Copmonents/CustomTypegraphy"
 import {  useState } from "react"
 import { useDispatch } from "react-redux"
 import { ToastContainer, toast } from 'react-toastify';
-import { addModule } from "../src/Slices/add_module"
+import { addModule } from "../../src/Slices/add_module"
+import { useRouter } from 'next/router'
 
 function AddModule() {
  const [moduleName,setModuleName] = useState('')
  const [desc,setDesc] = useState('')
  const [lessonCount,setLessonCount] = useState('')
+ const [courseIndex,setCourseIndex] = useState('')
+ const router = useRouter()
   const dispatch = useDispatch()
 
   function FormHandler(e) {
     e.preventDefault()
-    if(moduleName && desc && lessonCount){
+    if(moduleName && desc && lessonCount && courseIndex && router.query.id){
       dispatch(addModule(
         {
           title:moduleName,
           description:desc,
-          lessons_count:lessonCount
+          lessons_count:lessonCount,
+          course_id:router.query.id,
+          index:courseIndex
         }
       ))
       setModuleName("")
@@ -49,6 +54,7 @@ function AddModule() {
                     <CustomInput handleChange={setModuleName} val={moduleName} label_text={"Module nomi"} type={"text"} placeholder={"Module nomini kiriting"}/>
                     <CustomInput handleChange={setDesc} val={desc} label_text={"Tavsif"} type={"text"} placeholder={"Tavsif kiriting"}/>
                     <CustomInput handleChange={setLessonCount} val={lessonCount} label_text={"Darslar soni"} type={"number"} placeholder={"Darslar sonini kiriting"}/>
+                    <CustomInput handleChange={setCourseIndex} val={courseIndex} label_text={"Tartib raqam"} type={"number"} placeholder={"Tartib raqamni kiriting"}/>
                 </Box>
               </Box>
             </Grid>

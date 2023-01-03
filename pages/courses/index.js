@@ -90,26 +90,26 @@ function Courses() {
                                     {
                                         coursesData?.map((item,i) => (
                                             <StyledRow
-                                                onClick={()=> router.push(`course/${item.course_id}`)}
+                                                onClick={()=> router.push(`course/${item?.course_id}`)}
                                                 key={i}
                                             > 
                                                 <TableCell className='rowBorderStart'   >
                                                     <Image style={{objectFit:"cover",borderRadius:"10px"}} src={`https://web.diziproedu.uz/uploads/images/${item.images[0].src}`} width={123} height={70} alt="cover" />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle'  component="th" scope="row">
-                                                    <CustomTypegraphy class="course__sub--title" variant={"p"} text={item.name} />
+                                                    <CustomTypegraphy class="course__sub--title" variant={"p"} text={item?.name} />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >
-                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={item.description} />
+                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={item?.description} />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >
-                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`#${item.course_id}`} />
+                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`#${item?.course_id}`} />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >
-                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`${item.course_modules.length >= 1 ? item.course_modules.length : 0} / ${item.total_lessons}`} />
+                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`${item?.course_modules?.length >= 1 ? item?.course_modules.length : 0} / ${item?.total_lessons}`} />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >
-                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`${item.total_hours} soat`} />
+                                                    <CustomTypegraphy class="course__desc" variant={"p"} text={`${item?.total_hours} soat`} />
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >
                                                     <Box sx={{display:"flex",alignItems:"center"}}>
