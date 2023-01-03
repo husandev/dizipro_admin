@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomBtn from '../../src/Copmonents/CustomBtn'
 import CustomTypegraphy from '../../src/Copmonents/CustomTypegraphy'
@@ -76,9 +76,14 @@ function Course() {
     
     useEffect(() => {
         if(router.isReady){
+    
             dispatch(getCourse(router.query.id))
+            // router.reload(router.pathname)
         }
+  
     },[router.query.id])
+
+
 
 
     useEffect(() => {
@@ -87,15 +92,14 @@ function Course() {
                 dispatch(getModule(courseData?.modules[0]?.id))
             }
         
+        
         }
 
     },[courseStatus])
 
     useEffect(()=> {
-        if(courseData?.modules[0] !== null){
-            dispatch(getModule(courseData?.modules[0]?.id))
-            setModuleId(courseData?.modules[0]?.id)
-        }
+        dispatch(getModule(courseData?.modules[0]?.id))
+        setModuleId(courseData?.modules[0]?.id)
     },[courseData])
 
     function ModuleHandler(item,id) {
@@ -189,7 +193,8 @@ function Course() {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <Box sx={{display:"flex",justifyContent:"end",width:"100%"}}>
+                            {
+                                moduleId !== undefined ?       <Box sx={{display:"flex",justifyContent:"end",width:"100%"}}>
                                 <Link  href={`/add-lesson/${moduleId}`} legacyBehavior >
                                         <a >
                                             <CustomBtn class="add__course--btn" text="">
@@ -198,7 +203,9 @@ function Course() {
                                             </CustomBtn>
                                         </a>
                                 </Link>
-                                </Box>
+                                </Box> : null
+                            }
+                      
                            
                         </Grid>
                     </Grid>
