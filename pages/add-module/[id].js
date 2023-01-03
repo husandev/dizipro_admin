@@ -31,6 +31,7 @@ function AddModule() {
       setModuleName("")
       setDesc("")
       setLessonCount("")
+      setCourseIndex('')
       toast.success("Module qo'shildi");
     }
     else{
