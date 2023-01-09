@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import CustomBtn from '../../src/Copmonents/CustomBtn'
 import CustomTypegraphy from '../../src/Copmonents/CustomTypegraphy'
 import { course, getCourse } from '../../src/Slices/get_course'
-import {Box, CircularProgress, Grid, List, ListItem ,TableContainer,Paper ,Table,TableHead,styled,TableRow,TableCell,TableBody } from "@mui/material"
+import {Box, CircularProgress, Grid, List, ListItem ,TableContainer,Paper ,Table,TableHead,styled,TableRow,TableCell,TableBody, Modal, Button, Typography } from "@mui/material"
 import { getModules, modules } from '../../src/Slices/get_modules'
 import { getModule, module } from '../../src/Slices/get_module'
 import Link from 'next/link'
+import { deleteLesson } from '../../src/Slices/delete_lesson'
+import { deleteModule } from '../../src/Slices/delete_module'
 
 
 const StyledRow = styled(TableRow)(
@@ -62,6 +64,18 @@ const StyledListItem = styled(ListItem)(
   `
   );
 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 300,
+    bgcolor: 'background.paper',
+    outline:"none",
+    boxShadow: 24,
+    p: 2,
+    borderRadius:"5px",
+  };
 
 function Course() {
 
@@ -73,6 +87,10 @@ function Course() {
     const [active,setActive] = useState(1)
     const dispatch = useDispatch()
     const router = useRouter()
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => setOpen(false);
+    const [lessonId,setLessonId] = useState('')
+    const [deletedModuleId,setDeletedModuleId] = useState('')
     
     useEffect(() => {
         if(router.isReady){
@@ -109,12 +127,45 @@ function Course() {
         dispatch(getModule(item.id))
     }
 
+    function DeleteHandler() {
+        if(lessonId){
+            dispatch(deleteLesson(lessonId))
+            setLessonId('')
+        }
+        else if(moduleId){
+            dispatch(deleteModule(moduleId))
+            setModuleId('')
+        }
+        handleClose()
+    }
 
+    function handleOpen() {
+        setOpen(true)
+    }
   
     if(courseStatus === "succeeded"){
         return (
             <Box>
                 <Box sx={{boxShadow:"0px 2px 2px rgba(0, 0, 0, 0.04)",borderRadius:"8px",background:"#fff",padding:"24px"}}>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                       
+                        <Box sx={style}>
+                            <Box sx={{display:"flex",justifyContent:'space-between'}}>
+                                
+                                <Button onClick={handleClose} variant="outlined">Orqaga</Button>
+                                <Button onClick={()=> DeleteHandler()} variant="outlined" color="error">O'chirish</Button>
+                                
+                                
+                            </Box>
+                           
+                        </Box>
+                    </Modal>
+
                     <Box sx={{display:"flex",alignItems:"center",paddingBottom:"20px",borderBottom:"1px solid rgba(0, 0, 0, 0.15)",marginBottom:"20px"}}>
                         
                         <Image style={{borderRadius:"6px",marginRight:"12px"}} width={70} height={40} src={`https://web.diziproedu.uz/uploads/images/${courseData?.images[0].src}`} alt="course"/>
@@ -132,7 +183,10 @@ function Course() {
                                                 <Image src="/icons/burger.svg" width={16} height={16} alt="menu"/>
                                                 <CustomTypegraphy text={item?.title} class="module__name"/>
                                             </Box>
-                                            <CustomTypegraphy text="7" class="module__lesson"/>
+                                            {/* <CustomTypegraphy text="7" class="module__lesson"/> */}
+                                            <Box onClick={()=>{handleOpen();setModuleId(item.id)}}>
+                                                <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/trash.svg" width={20} height={20} alt="threeDots" />} />   
+                                            </Box>
                                         </StyledListItem>
                                     ))
                                     : null
@@ -172,7 +226,7 @@ function Course() {
                                                         {item?.title}
                                                     </TableCell>
                                                     <TableCell className='rowBorderMiddle'  component="th" scope="row">
-                                                        <CustomTypegraphy className="table__id" variant={"span"} text={`${item?.id}`} />
+                                                        <CustomTypegraphy className="table__id" variant={"span"} text={`${item?.index}`} />
                                                     </TableCell>
                                                     <TableCell className='rowBorderMiddle' >{item?.seconds}</TableCell>
                                                     <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>
@@ -181,8 +235,10 @@ function Course() {
                                                             <Box sx={{marginRight:"10px"}}>
                                                                 <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/edit.svg" width={20} height={20} alt="threeDots" />} />  
                                                             </Box>
-                                                             
-                                                            <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/trash.svg" width={20} height={20} alt="threeDots" />} />   
+                                                             <Box onClick={()=>{handleOpen();setLessonId(item.id)}}>
+                                                                <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/trash.svg" width={20} height={20} alt="threeDots" />} />   
+                                                             </Box>
+                                                            
                                                         </Box>            
                                                     </TableCell>
                                                 </StyledRow>

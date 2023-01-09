@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box,FormControl,InputLabel,MenuItem,Modal, Select } from '@mui/material'
 import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,16 +8,42 @@ import Link from "next/link"
 import { useRouter } from 'next/router'
 import { getUser, user } from '../../src/Slices/get_user'
 import CircularProgress from '@mui/material/CircularProgress';
+import { courses, getCourses } from '../../src/Slices/get_courses'
+import { AddCourseToUser } from '../../src/Slices/add_course_to_user'
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    outline:"none",
+    borderRadius:"5px"
+  };
 
 function User() {
     const SingleUser = useSelector(user)
     const router = useRouter()
     const dispatch = useDispatch()
     const get_user_status = useSelector((state) => state.get_user.status)
-    
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const courseStatus = useSelector((state) => state.get_courses.status)
+    const coursesData = useSelector(courses)
+  
+    const [course, setCourse] = React.useState('');
+
+    const handleChange = (event) => {
+        setCourse(event.target.value);
+    };
+
 
     
-    console.log(SingleUser);
+
 
     useEffect(()=> {
         if(router.isReady){
@@ -26,10 +52,61 @@ function User() {
        
     },[router.query.id])
 
-    
+    useEffect(()=> {
+        if(courseStatus === "idle"){
+            dispatch(getCourses())
+        }
+    },[courseStatus])
+
+    function AddCourseHandler(e) {
+        e.preventDefault()
+        if(course){
+            dispatch(
+                AddCourseToUser(
+                    {
+                        user_id:router.query.id,
+                        course_id:course
+                    }
+                )
+            )
+            setCourse('')
+            handleClose( )
+        }
+    }
+
     if(get_user_status === "succeeded"){
         return (
             <Box>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <form onSubmit={AddCourseHandler}>
+                            <FormControl sx={{marginBottom:"10px"}} fullWidth>
+                                <InputLabel id="demo-simple-select-label">Kurslar</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={course}
+                                    label="Kurs"
+                                    onChange={handleChange}
+                                >
+                                    {
+                                        coursesData?.map(item => (
+                                            <MenuItem key={item.course_id} value={item.course_id}>{item.name}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
+                            <CustomBtn   text={"Qo'shish"} class="course__add" />
+                        </form>
+                      
+                    </Box>
+                </Modal>
+
                 <Box sx={{background:"#fff",padding:"24px",boxShadow:" 0px 2px 2px rgba(0, 0, 0, 0.04)",borderRadius: "8px",marginBottom:"16px"}}>
                     <Box sx={{display:"flex", aligntems: "center",justifyContent: "space-between"}}>
                         <Box sx={{display:"flex",alignItems:"center"}}>
@@ -63,16 +140,25 @@ function User() {
                 </Box>
                 
                 <Box sx={{background: "#fff",borderRadius:"12px",padding:"20px"}}>
-                    <CustomTypegraphy text="Kurslar" class="course__title" component="h3"></CustomTypegraphy>
+                    {
+                        <Box sx={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"10px"}}>   
+                            <CustomTypegraphy text="Kurslar" class="course__title" component="h3"></CustomTypegraphy>
+                            <Box onClick={handleOpen}>
+                                <CustomBtn  text={"Kurs qo'shish"} class="course__add--btn" />
+                            </Box>
+                            
+                        </Box>
+                    }
+
                      {
                         SingleUser.courses.map(item => (
                             <Box sx={{background:"#fff",border:"1.5px solid #d9d9d9",display:"flex",borderRadius:"10px",padding:"12px",marginBottom:"16px"}}>
                                 <Box sx={{display:"flex",alignItems:"center"}}>
-                                    <Image style={{borderRadius:"10px",objectFit:"cover",marginRight:"24px"}} src="/icons/course.jpg" width={181} height={103} alt="course"></Image>
+                                    <Image style={{borderRadius:"10px",objectFit:"cover",marginRight:"24px"}} src={`https://web.diziproedu.uz/uploads/images/${item.images[0].src}`} width={181} height={103} alt="course"></Image>
                                     <Box sx={{width:"265px",borderRight:"1px solid rgba(0, 0, 0, 0.1)",marginRight:"24px"}} >
                                         <CustomTypegraphy text={item.name} class="course__name" component="p"></CustomTypegraphy>
                                         <Box sx={{display:"flex",alignItems:"center",marginBottom:"8px"}}>
-                                            <Image style={{marginRight:"3px"}} src={item.images[0].src} width={16} height={16} alt="clock"></Image>
+                                            <Image style={{marginRight:"3px"}} src={`/icons/clock.svg`} width={16} height={16} alt="clock"></Image>
                                             <CustomTypegraphy text={`${item.total_hours} soat`} class="course__time" component="p"></CustomTypegraphy>
                                             <Box sx={{margin:"0 6px"}}>
                                             •
@@ -121,6 +207,7 @@ function User() {
                         ))
                      }
                     
+                   
                    
                 </Box>
             </Box>

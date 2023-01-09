@@ -140,6 +140,33 @@ const StyledBtn = styled(Button)(
         transition: all 0.4s ease;
         pointer-events:none
     }
+
+    &.MuiButton-course__add--btn{
+        background: #01605a;
+        border: 1.5px solid #01605a;
+        border-radius: 8px;
+        padding:10px 32px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: -0.02em;
+        color: #fff;
+        text-transform: inherit;
+    }
+
+    &.MuiButton-course__add{
+        width:100%;
+        background: #01605a;
+        border: 1.5px solid #01605a;
+        border-radius: 8px;
+        padding:10px 32px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: -0.02em;
+        color: #fff;
+        text-transform: inherit;
+    }
 `
 );
  

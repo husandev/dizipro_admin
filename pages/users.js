@@ -8,6 +8,7 @@ import CustomPagination from "../src/Copmonents/CustomPagination";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers, users } from "../src/Slices/get_users";
 import CircularProgress from '@mui/material/CircularProgress';
+import { searchedUser, searchUser } from "../src/Slices/search_user";
 
 const tabsWrapperStyle = {
     background:"#fff",
@@ -70,7 +71,8 @@ function Users() {
     const usersStatus = useSelector(state => state.get_users.status)
     const dispatch = useDispatch()
     const usersData = useSelector(users)
-
+    const [searched,setSearched] = useState('')
+    const SearchedUsersData = useSelector(searchedUser)
     
     const StyledUserName = styled(Box)(
         ( theme ) => `
@@ -85,6 +87,12 @@ function Users() {
             margin-right:8px;
     `
     );
+
+    function searchHandler(val) {
+
+        dispatch(searchUser(val))
+        console.log(searched);
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -128,7 +136,7 @@ function Users() {
                                     label="ID/Xaridor bo’yicha qidiring..."
                                     id="outlined-size-small"
                                     size="small"
-                                    
+                                    onChange={(e)=> {searchHandler(e.target.value);setSearched(e.target.value)}}
                                 />
                             </Box>
                         </Box>
@@ -146,6 +154,32 @@ function Users() {
                                 </TableHead>
                                 <TableBody >
                                     {
+                                        searched ?
+                                        SearchedUsersData?.data?.map((item,i) => (
+                                            <StyledRow
+                                                onClick={()=> router.push(`user/${item.user_id}`)}
+                                                key={item.user_id}
+                                                
+                                            > 
+                                                <TableCell className='rowBorderStart'  sx={{display:"flex",alignItems:"center"}} >
+                                                    <StyledUserName sx={(i + 1) % 2 === 0 ? {background:"#738dbf "} : {background:"#ab73bf"} } >{item.first_name.slice(0,1)}</StyledUserName>
+                                                    <CustomTypegraphy className="table__id" variant={"span"} text={`${item.first_name} ${item.last_name}`} />
+                                                </TableCell>
+                                                <TableCell className='rowBorderMiddle'  component="th" scope="row">
+                                                    <CustomTypegraphy className="table__id" variant={"span"} text={`#${item.user_id}`} />
+                                                </TableCell>
+                                                <TableCell className='rowBorderMiddle' >{item.created_at.slice(0,10)}</TableCell>
+                                                <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>
+                                                <TableCell className='rowBorderMiddle' >+{item.phone_number.slice(0,3)} ({item.phone_number.slice(3,5)}) {item.phone_number.slice(5,8)}-{item.phone_number.slice(8,10)}-{item.phone_number.slice(10,12)}</TableCell>
+                                                <TableCell className='rowBorderEnd' >
+                                                    <Box sx={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                                                        <CustomTypegraphy className="table__text" variant={"span"} text={`2 ta`} />
+                                                        <CustomBtn text="" class="table__dots--btn" icon={<Image  src="/icons/DotsThree.svg" width={10} height={14} alt="threeDots"/>} />   
+                                                    </Box>
+                                                                               
+                                                </TableCell>
+                                        </StyledRow>
+                                        )) :
                                         usersData?.data?.data?.map((item,i) => (
                                             <StyledRow
                                                 onClick={()=> router.push(`user/${item.user_id}`)}

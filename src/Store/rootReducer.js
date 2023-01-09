@@ -10,6 +10,11 @@ import { reducer as get_courses } from "../Slices/get_courses"
 import { reducer as get_course } from "../Slices/get_course"
 import { reducer as add_module } from "../Slices/add_module"
 import { reducer as add_lesson } from "../Slices/add_lesson"
+import { reducer as add_course_to_user} from "../Slices/add_course_to_user"
+import { reducer as search_user} from "../Slices/search_user"
+import { reducer as delete_lesson} from "../Slices/delete_lesson"
+import { reducer as delete_module} from "../Slices/delete_module"
+
 
 const rootReducer = combineReducers({
     get_users,
@@ -23,6 +28,10 @@ const rootReducer = combineReducers({
     get_course,
     add_module,
     add_lesson,
+    add_course_to_user,
+    search_user,
+    delete_lesson,
+    delete_module
 
 })
 
