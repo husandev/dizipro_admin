@@ -81,6 +81,20 @@ const StyledBtn = styled(Button)(
        
     }
 
+    &.MuiButton-update__lesson{
+        width:100%;
+        background: #01605a;
+        border: 1.5px solid #01605a;
+        border-radius: 8px;
+        padding:10px 32px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: -0.02em;
+        color: #fff;
+        text-transform: inherit;
+    }
+
     &.MuiButton-add__course--disabled{
         background: #01605a;
         border: 1.5px solid #01605a;

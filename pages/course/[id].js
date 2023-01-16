@@ -11,6 +11,9 @@ import { getModule, module } from '../../src/Slices/get_module'
 import Link from 'next/link'
 import { deleteLesson } from '../../src/Slices/delete_lesson'
 import { deleteModule } from '../../src/Slices/delete_module'
+import CustomInput from '../../src/Copmonents/CustomInput'
+import { updateLesson } from '../../src/Slices/update_lesson'
+import { getLesson, lesson } from '../../src/Slices/get_lesson'
 
 
 const StyledRow = styled(TableRow)(
@@ -77,6 +80,21 @@ const StyledListItem = styled(ListItem)(
     borderRadius:"5px",
   };
 
+  const updateModalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 900,
+    bgcolor: 'background.paper',
+    outline:"none",
+    boxShadow: 24,
+    p: 2,
+    borderRadius:"5px",
+  };
+
+
+
 function Course() {
 
     const courseData = useSelector(course)
@@ -86,11 +104,27 @@ function Course() {
     const [moduleId,setModuleId] = useState('')
     const [active,setActive] = useState(1)
     const dispatch = useDispatch()
+    const lessonData = useSelector(lesson)
     const router = useRouter()
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [lessonId,setLessonId] = useState('')
-    const [deletedModuleId,setDeletedModuleId] = useState('')
+    const [moduleName,setModuleName] = useState('')
+    const [moduleDesc,setModuleDesc] = useState('')
+    const [moduleIndex,setModuleIndex] = useState('')
+    const [moduleLength,setModuleLength] = useState('')
+    const [moduleLink,setModuleLink] = useState('')
+    const [updateLessonId,setUpdateLessonId] = useState('')
+    const [updateModal,setUpdateModal] = useState(false)
+    const CloseUpdateModal = () => {
+        setUpdateModal(false);
+        setModuleLink('')
+        setModuleLength('')
+        setModuleIndex('')
+        setModuleDesc('')
+        setModuleName('')
+    }
+    const OpenUpdateModal = () => setUpdateModal(true);
     
     useEffect(() => {
         if(router.isReady){
@@ -109,8 +143,6 @@ function Course() {
             if(courseData?.modules[0] !== null){
                 dispatch(getModule(courseData?.modules[0]?.id))
             }
-        
-        
         }
 
     },[courseStatus])
@@ -142,7 +174,28 @@ function Course() {
     function handleOpen() {
         setOpen(true)
     }
+
+    
   
+    function formHandler(e) {
+        e.preventDefault()
+        dispatch(updateLesson(
+            {
+                id:updateLessonId,
+                body:{
+                    title:moduleName ? moduleName : lessonData.title,
+                    body:moduleDesc ? moduleDesc : lessonData.body,
+                    video_url:moduleLink ? moduleLink : lessonData.video_url,
+                    index:moduleIndex ? moduleIndex : lessonData.index,
+                    module_id:lessonData?.module_id,
+                    seconds:moduleLength ? moduleLength.toString() : lessonData.seconds.toString()
+                }
+               
+            }
+        ))
+        CloseUpdateModal()
+    }
+
     if(courseStatus === "succeeded"){
         return (
             <Box>
@@ -156,16 +209,60 @@ function Course() {
                        
                         <Box sx={style}>
                             <Box sx={{display:"flex",justifyContent:'space-between'}}>
-                                
                                 <Button onClick={handleClose} variant="outlined">Orqaga</Button>
                                 <Button onClick={()=> DeleteHandler()} variant="outlined" color="error">O'chirish</Button>
-                                
-                                
                             </Box>
                            
                         </Box>
                     </Modal>
-
+                    <Modal
+                        open={updateModal}
+                        onClose={CloseUpdateModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                       <Box>
+                            <Box sx={updateModalStyle}>
+                                <form onSubmit={formHandler}>
+                                    <Box sx={{display:"flex",flexFlow:"wrap"}}>
+                                        <Box sx={{width:"50%"}}>
+                                            <CustomInput handleChange={setModuleName} val={moduleName} label_text={"Darslik nomi"} type={"text"} placeholder={"Darslik nomini kiriting"}/>
+                                        </Box>
+                                        <Box sx={{width:"50%"}}>
+                                            <CustomInput handleChange={setModuleDesc} val={moduleDesc} label_text={"Tavsif"} type={"text"} placeholder={"Tavsif kiriting"}/>
+                                        </Box>
+                                        <Box sx={{width:"50%"}}>
+                                            <CustomInput handleChange={setModuleIndex} val={moduleIndex} label_text={"Index"} type={"text"} placeholder={"Index kiriting"}/>
+                                        </Box>
+                                        <Box sx={{width:"50%"}}>
+                                            <CustomInput handleChange={setModuleLength} val={moduleLength} label_text={"Dars uzunligi"} type={"text"} placeholder={"Dars uzunligini kiriting"}/>
+                                        </Box>
+                                        <Box sx={{width:"50%"}}>
+                                            <CustomInput handleChange={setModuleLink} val={moduleLink} label_text={"Dars linki"} type={"text"} placeholder={"Dars linkini kiriting"}/>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{display:"flex",justifyContent:'space-between'}}>
+                                        <Box onClick={CloseUpdateModal} sx={{width:"100%",marginRight:"5px",}}>
+                                            <CustomBtn class="add__module" text="">
+                                                <CustomTypegraphy text="Orqaga" class="add__module--text"/>
+                                            </CustomBtn>
+                                        </Box>
+                                        <Box sx={{width:"100%",marginLeft:"5px",display:"flex",alignItems:"flex-end",justifyContent:"flex-end"}}>
+                                            <CustomBtn class="update__lesson" text="">
+                                                <CustomTypegraphy text="O'zgartirish" class="add__lesson--text"/>
+                                            </CustomBtn>
+                                        </Box>
+                                    
+                                    
+                                    </Box>
+                                </form>
+                         
+                                
+                            </Box> 
+                            
+                       </Box>
+                       
+                    </Modal>
                     <Box sx={{display:"flex",alignItems:"center",paddingBottom:"20px",borderBottom:"1px solid rgba(0, 0, 0, 0.15)",marginBottom:"20px"}}>
                         
                         <Image style={{borderRadius:"6px",marginRight:"12px"}} width={70} height={40} src={`https://web.diziproedu.uz/uploads/images/${courseData?.images[0].src}`} alt="course"/>
@@ -232,13 +329,12 @@ function Course() {
                                                     <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>
                                                     <TableCell className='rowBorderEnd' >
                                                         <Box sx={{display:"flex",alignItems:"center"}}>
-                                                            <Box sx={{marginRight:"10px"}}>
+                                                            <Box onClick={()=>{OpenUpdateModal();setUpdateLessonId(item.id);dispatch(getLesson(item.id))}} sx={{marginRight:"10px"}}>
                                                                 <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/edit.svg" width={20} height={20} alt="threeDots" />} />  
                                                             </Box>
                                                              <Box onClick={()=>{handleOpen();setLessonId(item.id)}}>
                                                                 <CustomBtn text="" class="table__btn" icon={<Image  src="/icons/trash.svg" width={20} height={20} alt="threeDots" />} />   
                                                              </Box>
-                                                            
                                                         </Box>            
                                                     </TableCell>
                                                 </StyledRow>

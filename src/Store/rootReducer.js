@@ -14,6 +14,8 @@ import { reducer as add_course_to_user} from "../Slices/add_course_to_user"
 import { reducer as search_user} from "../Slices/search_user"
 import { reducer as delete_lesson} from "../Slices/delete_lesson"
 import { reducer as delete_module} from "../Slices/delete_module"
+import { reducer as update_lesson} from "../Slices/update_lesson"
+import { reducer as get_lesson} from "../Slices/get_lesson"
 
 
 const rootReducer = combineReducers({
@@ -31,8 +33,9 @@ const rootReducer = combineReducers({
     add_course_to_user,
     search_user,
     delete_lesson,
-    delete_module
-
+    delete_module,
+    update_lesson,
+    get_lesson
 })
 
 export default rootReducer  
