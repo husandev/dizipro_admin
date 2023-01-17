@@ -186,7 +186,7 @@ function Course() {
                     title:moduleName ? moduleName : lessonData.title,
                     body:moduleDesc ? moduleDesc : lessonData.body,
                     video_url:moduleLink ? moduleLink : lessonData.video_url,
-                    index:moduleIndex ? moduleIndex : lessonData.index,
+                    index:moduleIndex ? moduleIndex.toString() : lessonData.index.toString(),
                     module_id:lessonData?.module_id,
                     seconds:moduleLength ? moduleLength.toString() : lessonData.seconds.toString()
                 }
