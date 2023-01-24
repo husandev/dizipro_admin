@@ -16,6 +16,7 @@ import { reducer as delete_lesson} from "../Slices/delete_lesson"
 import { reducer as delete_module} from "../Slices/delete_module"
 import { reducer as update_lesson} from "../Slices/update_lesson"
 import { reducer as get_lesson} from "../Slices/get_lesson"
+import { reducer as delete_course} from "../Slices/delete_course"
 
 
 const rootReducer = combineReducers({
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
     delete_lesson,
     delete_module,
     update_lesson,
-    get_lesson
+    get_lesson,
+    delete_course,
 })
 
 export default rootReducer  

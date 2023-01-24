@@ -10,6 +10,8 @@ import { getUser, user } from '../../src/Slices/get_user'
 import CircularProgress from '@mui/material/CircularProgress';
 import { courses, getCourses } from '../../src/Slices/get_courses'
 import { AddCourseToUser } from '../../src/Slices/add_course_to_user'
+import { deleteCourse } from '../../src/Slices/delete_course'
+import { getCourse,course } from '../../src/Slices/get_course'
 
 const style = {
     position: 'absolute',
@@ -34,23 +36,21 @@ function User() {
     const handleClose = () => setOpen(false);
     const courseStatus = useSelector((state) => state.get_courses.status)
     const coursesData = useSelector(courses)
+    const courseData = useSelector(course)
   
-    const [course, setCourse] = React.useState('');
+    const [oneCourse, setOneCourse] = React.useState('');
 
     const handleChange = (event) => {
-        setCourse(event.target.value);
+        setOneCourse(event.target.value);
     };
-
-
     
-
 
     useEffect(()=> {
         if(router.isReady){
             dispatch(getUser(router.query.id))
         }
        
-    },[router.query.id])
+    },[router.query.id,coursesData])
 
     useEffect(()=> {
         if(courseStatus === "idle"){
@@ -58,18 +58,32 @@ function User() {
         }
     },[courseStatus])
 
+    function removeCourse(id) {
+        console.log({
+            user_id:router.query.id,
+            course_id:id
+        });
+        dispatch(deleteCourse(
+            {
+                user_id:router.query.id,
+                course_id:id
+            }
+        ))
+       
+    }
+
     function AddCourseHandler(e) {
         e.preventDefault()
-        if(course){
+        if(oneCourse){
             dispatch(
                 AddCourseToUser(
                     {
                         user_id:router.query.id,
-                        course_id:course
+                        course_id:oneCourse
                     }
                 )
             )
-            setCourse('')
+            setOneCourse('')
             handleClose( )
         }
     }
@@ -90,7 +104,7 @@ function User() {
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
-                                    value={course}
+                                    value={oneCourse}
                                     label="Kurs"
                                     onChange={handleChange}
                                 >
@@ -152,7 +166,7 @@ function User() {
 
                      {
                         SingleUser.courses.map(item => (
-                            <Box sx={{background:"#fff",border:"1.5px solid #d9d9d9",display:"flex",borderRadius:"10px",padding:"12px",marginBottom:"16px"}}>
+                            <Box key={item.id} sx={{background:"#fff",border:"1.5px solid #d9d9d9",display:"flex",borderRadius:"10px",padding:"12px",marginBottom:"16px"}}>
                                 <Box sx={{display:"flex",alignItems:"center"}}>
                                     <Image style={{borderRadius:"10px",objectFit:"cover",marginRight:"24px"}} src={`https://web.diziproedu.uz/uploads/images/${item.images[0].src}`} width={181} height={103} alt="course"></Image>
                                     <Box sx={{width:"265px",borderRight:"1px solid rgba(0, 0, 0, 0.1)",marginRight:"24px"}} >
@@ -202,6 +216,9 @@ function User() {
                                     </Box>
                                     <CustomTypegraphy text="Hozirgi dars" class="course__price--title" component="p"></CustomTypegraphy>
                                     <CustomTypegraphy text="11. Rendering jarayoni" class="course__price--type" component="p"></CustomTypegraphy>
+                                    <Box onClick={()=> removeCourse(item.id)}>
+                                        <CustomBtn  text={"Kurs O'chirish"} class="course__remove--btn" />
+                                    </Box>
                                 </Box>
                             </Box>
                         ))
