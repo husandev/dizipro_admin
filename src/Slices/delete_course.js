@@ -7,8 +7,11 @@ const initialState = {
     error: null,
 };
 export const deleteCourse = createAsyncThunk(`api/courses/purchase`, async(obj)=>{
-  console.log(obj,"deleted");
-  const response = await instance.delete(`api/courses/purchase`,obj)
+  const response = await instance.delete(`api/courses/purchase`,
+    {
+      data: obj
+    }
+  )
   return response.data
 }) 
 

@@ -1,6 +1,6 @@
 import { Box,FormControl,InputLabel,MenuItem,Modal, Select } from '@mui/material'
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomBtn from '../../src/Copmonents/CustomBtn'
 import CustomTypegraphy from '../../src/Copmonents/CustomTypegraphy'
@@ -12,6 +12,7 @@ import { courses, getCourses } from '../../src/Slices/get_courses'
 import { AddCourseToUser } from '../../src/Slices/add_course_to_user'
 import { deleteCourse } from '../../src/Slices/delete_course'
 import { getCourse,course } from '../../src/Slices/get_course'
+import instance from '../../axios'
 
 const style = {
     position: 'absolute',
@@ -36,8 +37,7 @@ function User() {
     const handleClose = () => setOpen(false);
     const courseStatus = useSelector((state) => state.get_courses.status)
     const coursesData = useSelector(courses)
-    const courseData = useSelector(course)
-  
+    const [refresh,setRefresh] = useState(true)
     const [oneCourse, setOneCourse] = React.useState('');
 
     const handleChange = (event) => {
@@ -50,7 +50,7 @@ function User() {
             dispatch(getUser(router.query.id))
         }
        
-    },[router.query.id,coursesData])
+    },[router.query.id,refresh])
 
     useEffect(()=> {
         if(courseStatus === "idle"){
@@ -59,17 +59,8 @@ function User() {
     },[courseStatus])
 
     function removeCourse(id) {
-        console.log({
-            user_id:router.query.id,
-            course_id:id
-        });
-        dispatch(deleteCourse(
-            {
-                user_id:router.query.id,
-                course_id:id
-            }
-        ))
-       
+        dispatch(deleteCourse({user_id:router.query.id, course_id:id}))
+        setRefresh(!refresh)
     }
 
     function AddCourseHandler(e) {
@@ -85,6 +76,7 @@ function User() {
             )
             setOneCourse('')
             handleClose( )
+            setRefresh(!refresh)
         }
     }
 
