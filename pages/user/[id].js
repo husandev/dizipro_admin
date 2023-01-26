@@ -39,7 +39,11 @@ function User() {
     const coursesData = useSelector(courses)
     const [refresh,setRefresh] = useState(true)
     const [oneCourse, setOneCourse] = React.useState('');
+    const deleteCourseStatus = useSelector((state) => state.delete_course.status)
+    const addCourseStatus = useSelector((state) => state.add_course_to_user.status)
+    
 
+    console.log(deleteCourseStatus);
     const handleChange = (event) => {
         setOneCourse(event.target.value);
     };
@@ -50,7 +54,7 @@ function User() {
             dispatch(getUser(router.query.id))
         }
        
-    },[router.query.id,refresh])
+    },[router.query.id,addCourseStatus,deleteCourseStatus])
 
     useEffect(()=> {
         if(courseStatus === "idle"){
@@ -59,12 +63,13 @@ function User() {
     },[courseStatus])
 
     function removeCourse(id) {
-        dispatch(deleteCourse({user_id:router.query.id, course_id:id}))
         setRefresh(!refresh)
+        dispatch(deleteCourse({user_id:router.query.id, course_id:id}))
     }
 
     function AddCourseHandler(e) {
         e.preventDefault()
+        setRefresh(!refresh)
         if(oneCourse){
             dispatch(
                 AddCourseToUser(
@@ -76,12 +81,12 @@ function User() {
             )
             setOneCourse('')
             handleClose( )
-            setRefresh(!refresh)
+            
         }
     }
 
     if(get_user_status === "succeeded"){
-        return (
+        return (   
             <Box>
                 <Modal
                     open={open}
