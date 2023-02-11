@@ -53,13 +53,13 @@ function User() {
         if(router.isReady){
             dispatch(getUser(router.query.id))
         }
-       
     },[router.query.id,addCourseStatus,deleteCourseStatus])
 
     useEffect(()=> {
         if(courseStatus === "idle"){
             dispatch(getCourses())
         }
+        
     },[courseStatus])
 
     function removeCourse(id) {

@@ -52,6 +52,8 @@ function addCourse() {
   const dispatch = useDispatch()
   const [authorsVal,setAuthorsVal] = useState([])
   const [modulesVal,setModulesVal] = useState([])
+  const [features,setFeatures] = useState([])
+  const [featureInp,setFeatureInp] = useState('')
   const theme = useTheme();
   const formRef = useRef();
   const [url,setUrl] = useState('')
@@ -123,6 +125,14 @@ function addCourse() {
     const updateUrl = URL.createObjectURL(img);
     setUrl(updateUrl)
   
+  }
+
+  function AddFeature() {
+    if(featureInp){
+      setFeatures((old) => [...old,featureInp])
+      setFeatureInp('')
+    }
+ 
   }
 
 
@@ -222,6 +232,15 @@ function addCourse() {
                           
                         </Select>
                       </FormControl>
+                      <Box sx={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                        <Box sx={{width:"80%"}}>
+                          <CustomInput handleChange={setFeatureInp} val={featureInp} label_text={"Kurs xusisiyati"} type={"text"} placeholder={"Kurs xusisiyati kiriting"}/>
+                        </Box>
+                        <Box sx={{width:"20%",display:'flex',justifyContent:'flex-end'}}>
+                          <button onClick={AddFeature} type="button" className="feature--btn">Qo'shish</button>
+                        </Box>
+                      </Box>
+                      
                       {/* <FormControl size="small" sx={{width:"100%"}}>
                         <InputLabel id="demo-multiple-chip-label" sx={{background:"#fff"}}>Bo'limlar</InputLabel>
                         <Select
