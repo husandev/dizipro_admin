@@ -13,6 +13,9 @@ import { AddCourseToUser } from '../../src/Slices/add_course_to_user'
 import { deleteCourse } from '../../src/Slices/delete_course'
 import { getCourse,course } from '../../src/Slices/get_course'
 import instance from '../../axios'
+import EditIcon from '@mui/icons-material/Edit';
+import CustomInput from '../../src/Copmonents/CustomInput'
+import { updateUser } from '../../src/Slices/update_user'
 
 const style = {
     position: 'absolute',
@@ -26,6 +29,19 @@ const style = {
     outline:"none",
     borderRadius:"5px"
   };
+
+const editModalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 700,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    outline:"none",
+    borderRadius:"5px"
+}
 
 function User() {
     const SingleUser = useSelector(user)
@@ -41,7 +57,12 @@ function User() {
     const [oneCourse, setOneCourse] = React.useState('');
     const deleteCourseStatus = useSelector((state) => state.delete_course.status)
     const addCourseStatus = useSelector((state) => state.add_course_to_user.status)
-    
+    const [editModal,setEditModal] = useState(false)
+    const [userName,setUserName] = useState('')
+    const [surName,setSurName] = useState('')
+    const [phoneNumberOrEmail,setPhoneNumberOrEmail] = useState('')
+    const [gender,setGender] = useState('')
+    const EMAIL_REGEX = new RegExp("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$");  
 
     console.log(deleteCourseStatus);
     const handleChange = (event) => {
@@ -85,6 +106,48 @@ function User() {
         }
     }
 
+    function EditGender(val) {
+        setGender(val)
+    }
+
+
+    function UpdateUser() {
+        if(userName && surName && phoneNumberOrEmail && gender){
+            if(EMAIL_REGEX.test(phoneNumberOrEmail)){
+                dispatch(updateUser(
+                    {
+                        id:router.query.id,
+                        body:{
+                            first_name:userName,
+                            last_name:surName,
+                            email:phoneNumberOrEmail,
+                            gender
+                        }
+                    }
+                ))
+            }
+            else{
+                dispatch(updateUser(
+                    {
+                        id:router.query.id,
+                        body:{
+                            first_name:userName,
+                            last_name:surName,
+                            phone_number:phoneNumberOrEmail,
+                            gender
+                        }
+                    }
+                ))
+            }
+         
+            setSurName("")
+            setUserName("")
+            setPhoneNumberOrEmail("")
+            setGender("")
+            setEditModal(false)
+        }
+    }
+
     if(get_user_status === "succeeded"){
         return (   
             <Box>
@@ -117,6 +180,51 @@ function User() {
                       
                     </Box>
                 </Modal>
+                <Modal
+                    open={editModal}
+                    onClose={() => setEditModal(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={editModalStyle}>
+                        <form onSubmit={UpdateUser} >
+                       
+                            <Box sx={{display:"flex",flexFlow:"wrap"}}>
+                                <Box sx={{width:"50%"}}>
+                                    <CustomInput placeholder={"Ism kiriting"} type={"text"} label_text={"Ism"} handleChange={setUserName} val={userName}/>
+                                </Box>
+                                <Box sx={{width:"50%"}}>
+                                    <CustomInput placeholder={"Familya kiriting"} type={"text"} label_text={"Familya"} handleChange={setSurName} val={surName}/>
+                                </Box>
+                                <Box sx={{width:"50%"}}>
+                                    <CustomInput placeholder={"Telefon raqam yoki email kiriting"} type={"text"} label_text={"Telefon raqam yoki email"} handleChange={setPhoneNumberOrEmail} val={phoneNumberOrEmail}/>
+                                </Box>  
+                                <Box sx={{width:"50%"}}>
+                                <label style={{marginBottom:"10px",display:"block"}} >Jinsni tanlang</label>
+                                    <FormControl fullWidth size='small'>
+                                        <InputLabel id="demo-simple-select-label">Jins</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={gender}
+                                            label="Jins"
+                                            onChange={(e)=> EditGender(e.target.value)}
+                                        >
+                                          <MenuItem  value="m" >Erkak</MenuItem>
+                                          <MenuItem  value="f" >Ayol</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box> 
+                                
+                            </Box>
+                            <Box sx={{display:"flex",justifyContent:'space-between'}}>
+                                <CustomBtn   text={"O'zgartirish"} class="course__add" />
+                            </Box>
+                            
+                        </form>
+                      
+                    </Box>
+                </Modal>
 
                 <Box sx={{background:"#fff",padding:"24px",boxShadow:" 0px 2px 2px rgba(0, 0, 0, 0.04)",borderRadius: "8px",marginBottom:"16px"}}>
                     <Box sx={{display:"flex", aligntems: "center",justifyContent: "space-between"}}>
@@ -124,7 +232,10 @@ function User() {
                             <CustomTypegraphy text={`${SingleUser?.first_name} ${SingleUser?.last_name}`} class="user_name" component="h2"></CustomTypegraphy>
                             <CustomTypegraphy text={`#${SingleUser?.user_id}`} class="user_id" component="h3"></CustomTypegraphy>
                         </Box>
-                        <CustomBtn text="" class="user_dots" icon={<Image style={{transform: "rotate(90deg)"}}  src="/icons/DotsThree.svg" width={22} height={22} alt="threeDots"/>} />
+                        <Box onClick={()=> setEditModal(true)}>
+                            <CustomBtn text="" class="user_dots" icon={<EditIcon />} />
+                        </Box>
+                        
                     </Box>
                 </Box>
     
@@ -132,7 +243,7 @@ function User() {
                     <Box sx={{background:"#fff",borderRadius:"8px",padding:"24px 20px",boxShadow:" 0px 2px 2px rgba(0, 0, 0, 0.04)",width:"320px"}}>
                         <CustomTypegraphy text="Telefon raqam" class="user__sub--title" component="p"></CustomTypegraphy>
                         {
-                            SingleUser ?  <CustomTypegraphy text={`+${SingleUser?.phone_number.slice(0,3)} (${SingleUser?.phone_number.slice(3,5)}) ${SingleUser?.phone_number.slice(5,8)}-${SingleUser?.phone_number.slice(8,10)}-${SingleUser?.phone_number.slice(10,12)}`} class="user__info" component="h3"></CustomTypegraphy> : null
+                            SingleUser ?  <CustomTypegraphy text={`${SingleUser?.phone_number}`} class="user__info" component="h3"></CustomTypegraphy> : null
                         }
                        
                     </Box>
@@ -162,7 +273,7 @@ function User() {
                     }
 
                      {
-                        SingleUser.courses.map(item => (
+                        SingleUser?.courses?.map(item => (
                             <Box key={item.id} sx={{background:"#fff",border:"1.5px solid #d9d9d9",display:"flex",borderRadius:"10px",padding:"12px",marginBottom:"16px"}}>
                                 <Box sx={{display:"flex",alignItems:"center"}}>
                                     <Image style={{borderRadius:"10px",objectFit:"cover",marginRight:"24px"}} src={`https://web.diziproedu.uz/uploads/images/${item.images[0].src}`} width={181} height={103} alt="course"></Image>

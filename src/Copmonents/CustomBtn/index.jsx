@@ -16,6 +16,7 @@ const StyledBtn = styled(Button)(
         padding:4px;
         box-shadow:none;
         background:none;
+        color:#000;
 
         &::before{
             content:"";

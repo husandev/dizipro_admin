@@ -52,7 +52,8 @@ function addCourse() {
   const dispatch = useDispatch()
   const [authorsVal,setAuthorsVal] = useState([])
   const [modulesVal,setModulesVal] = useState([])
-  const [features,setFeatures] = useState([])
+  // const [features,setFeatures] = useState([])
+  let features = [] 
   const [featureInp,setFeatureInp] = useState('')
   const theme = useTheme();
   const formRef = useRef();
@@ -127,12 +128,14 @@ function addCourse() {
   
   }
 
-  function AddFeature() {
-    if(featureInp){
-      setFeatures((old) => [...old,featureInp])
+  const  AddFeature = () => {
+    if(featureInp !== ''){
+      // setFeatures((old) => [featureInp,...old])
+      // features.split(featureInp)
+      console.log(features);
       setFeatureInp('')
     }
- 
+
   }
 
 
