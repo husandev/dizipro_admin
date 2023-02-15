@@ -116,16 +116,17 @@ function User() {
 
 
     function UpdateUser() {
-        if(userName && surName && phoneNumberOrEmail && gender){
+        if(userName || surName || phoneNumberOrEmail || gender){
+            
             if(EMAIL_REGEX.test(phoneNumberOrEmail)){
                 dispatch(updateUser(
                     {
                         id:router.query.id,
                         body:{
-                            first_name:userName,
-                            last_name:surName,
-                            email:phoneNumberOrEmail,
-                            gender
+                            first_name:userName ? userName : SingleUser.first_name,
+                            last_name:surName ? surName : SingleUser.last_name,
+                            email:phoneNumberOrEmail ? phoneNumberOrEmail : SingleUser.email,
+                            gender:gender ? gender : SingleUser.gender
                         }
                     }
                 ))
@@ -135,15 +136,14 @@ function User() {
                     {
                         id:router.query.id,
                         body:{
-                            first_name:userName,
-                            last_name:surName,
-                            phone_number:phoneNumberOrEmail,
-                            gender
+                            first_name:userName ? userName : SingleUser.first_name,
+                            last_name:surName ? surName : SingleUser.last_name,
+                            phone_number:phoneNumberOrEmail ? phoneNumberOrEmail : SingleUser.phone_number,
+                            gender:gender ? gender : SingleUser.gender
                         }
                     }
                 ))
             }
-         
             setSurName("")
             setUserName("")
             setPhoneNumberOrEmail("")
