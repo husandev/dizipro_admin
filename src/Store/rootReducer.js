@@ -20,6 +20,7 @@ import { reducer as delete_course} from "../Slices/delete_course"
 import { reducer as update_user} from "../Slices/update_user"
 import { reducer as block_user} from "../Slices/block_user"
 import { reducer as unblock_user} from "../Slices/unblock_user"
+import { reducer as update_module} from "../Slices/update_module"
 
 
 const rootReducer = combineReducers({
@@ -43,7 +44,8 @@ const rootReducer = combineReducers({
     delete_course,
     update_user,
     block_user,
-    unblock_user
+    unblock_user,
+    update_module,
 })
 
 export default rootReducer  
