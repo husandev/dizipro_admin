@@ -1,4 +1,4 @@
-import { Box,FormControl,InputLabel,MenuItem,Modal, Select } from '@mui/material'
+import { Box,Button,FormControl,InputLabel,MenuItem,Modal, Select } from '@mui/material'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +16,8 @@ import instance from '../../axios'
 import EditIcon from '@mui/icons-material/Edit';
 import CustomInput from '../../src/Copmonents/CustomInput'
 import { updateUser } from '../../src/Slices/update_user'
+import { blockUnblock, blockUser } from '../../src/Slices/block_user'
+import { unBlockUser } from '../../src/Slices/unblock_user'
 
 const style = {
     position: 'absolute',
@@ -57,12 +59,14 @@ function User() {
     const [oneCourse, setOneCourse] = React.useState('');
     const deleteCourseStatus = useSelector((state) => state.delete_course.status)
     const addCourseStatus = useSelector((state) => state.add_course_to_user.status)
+    const blockStatus = useSelector((state) => state.block_user.status)
+    const unblockStatus = useSelector((state) => state.unblock_user.status)
     const [editModal,setEditModal] = useState(false)
     const [userName,setUserName] = useState('')
     const [surName,setSurName] = useState('')
     const [phoneNumberOrEmail,setPhoneNumberOrEmail] = useState('')
     const [gender,setGender] = useState('')
-    const EMAIL_REGEX = new RegExp("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$");  
+    const EMAIL_REGEX = new RegExp("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$");
 
     console.log(deleteCourseStatus);
     const handleChange = (event) => {
@@ -74,7 +78,7 @@ function User() {
         if(router.isReady){
             dispatch(getUser(router.query.id))
         }
-    },[router.query.id,addCourseStatus,deleteCourseStatus])
+    },[router.query.id,addCourseStatus,deleteCourseStatus,unblockStatus,blockStatus])
 
     useEffect(()=> {
         if(courseStatus === "idle"){
@@ -146,6 +150,16 @@ function User() {
             setGender("")
             setEditModal(false)
         }
+    }
+
+    function UpdateUserBlock(status) {
+        if(status){
+            dispatch(blockUser(router.query.id))
+        }
+        else{
+            dispatch(unBlockUser(router.query.id))
+        }
+        setRefresh(!refresh)
     }
 
     if(get_user_status === "succeeded"){
@@ -232,9 +246,25 @@ function User() {
                             <CustomTypegraphy text={`${SingleUser?.first_name} ${SingleUser?.last_name}`} class="user_name" component="h2"></CustomTypegraphy>
                             <CustomTypegraphy text={`#${SingleUser?.user_id}`} class="user_id" component="h3"></CustomTypegraphy>
                         </Box>
-                        <Box onClick={()=> setEditModal(true)}>
-                            <CustomBtn text="" class="user_dots" icon={<EditIcon />} />
+                        <Box sx={{display:'flex',alignItems:"center"}}>
+                            <Box  sx={{marginRight:"10px"}}>
+                                {
+                                    SingleUser?.is_blocked ? 
+                                        <Button variant="outlined" onClick={()=> UpdateUserBlock(false)}  >
+                                            Blokdan chiqarish
+                                        </Button>
+                                    :   
+                                        <Button variant="outlined" color="error" onClick={()=> UpdateUserBlock(true)} >
+                                            Bloklash
+                                        </Button>
+                                }
+                              
+                            </Box>
+                            <Box onClick={()=> setEditModal(true)}>
+                                <CustomBtn text="" class="user_dots" icon={<EditIcon />} />
+                            </Box>
                         </Box>
+                        
                         
                     </Box>
                 </Box>

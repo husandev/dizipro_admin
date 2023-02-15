@@ -18,6 +18,8 @@ import { reducer as update_lesson} from "../Slices/update_lesson"
 import { reducer as get_lesson} from "../Slices/get_lesson"
 import { reducer as delete_course} from "../Slices/delete_course"
 import { reducer as update_user} from "../Slices/update_user"
+import { reducer as block_user} from "../Slices/block_user"
+import { reducer as unblock_user} from "../Slices/unblock_user"
 
 
 const rootReducer = combineReducers({
@@ -40,6 +42,8 @@ const rootReducer = combineReducers({
     get_lesson,
     delete_course,
     update_user,
+    block_user,
+    unblock_user
 })
 
 export default rootReducer  
