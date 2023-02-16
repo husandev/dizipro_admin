@@ -51,7 +51,6 @@ const SiderBarItemStyled = styled(ListItem)(
 function SideBar() {
     const [active,setActive] = useState(1)
     const router = useRouter()
-    console.log(router.pathname);
     useEffect(()=> {
         if(router.pathname === "/users" || router.pathname === "/user/[id]"){
             setActive(4)

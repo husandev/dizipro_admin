@@ -91,7 +91,6 @@ function Users() {
     function searchHandler(val) {
 
         dispatch(searchUser(val))
-        console.log(searched);
     }
 
     const handleChange = (event, newValue) => {
@@ -99,7 +98,6 @@ function Users() {
     };
 
     useEffect(()=> {
-        console.log(usersStatus,usersData);
         if(usersStatus === "idle"){
             dispatch(getUsers())
         }

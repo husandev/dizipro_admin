@@ -79,7 +79,6 @@ function addCourse() {
 
     if(courseName && description && lessonHour && img && lessonCount && authorsVal.length >= 1 && categoriesVal && price){
       let formData = new FormData();
-      console.log(img);
       formData.append("images", img)
       formData.append("name", courseName)
       formData.append("description", description)
@@ -132,7 +131,6 @@ function addCourse() {
     if(featureInp !== ''){
       // setFeatures((old) => [featureInp,...old])
       // features.split(featureInp)
-      console.log(features);
       setFeatureInp('')
     }
 
@@ -144,7 +142,6 @@ function addCourse() {
       target: { value },
     } = event;
 
-    console.log(value);
     setModulesVal(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,

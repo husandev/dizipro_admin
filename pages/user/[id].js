@@ -66,9 +66,9 @@ function User() {
     const [surName,setSurName] = useState('')
     const [phoneNumberOrEmail,setPhoneNumberOrEmail] = useState('')
     const [gender,setGender] = useState('')
-    const EMAIL_REGEX = new RegExp("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$");
-
-    console.log(deleteCourseStatus);
+    const EMAIL_REGEX = new RegExp("^[a-zA-Z][-_.a-zA-Z0-9]{5,29}@g(oogle)?mail.com$");
+    const regexBase = '(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})?[-. )]*(\\d{3})[-. ]*(\\d{4,5})(?: *x(\\d+))?';
+    const phoneRegex = new RegExp('\\s*' + regexBase + '\\s*', 'g');
     const handleChange = (event) => {
         setOneCourse(event.target.value);
     };
@@ -118,7 +118,7 @@ function User() {
     function UpdateUser() {
         if(userName || surName || phoneNumberOrEmail || gender){
             
-            if(EMAIL_REGEX.test(phoneNumberOrEmail)){
+            if(!phoneRegex.test(phoneNumberOrEmail)){
                 dispatch(updateUser(
                     {
                         id:router.query.id,

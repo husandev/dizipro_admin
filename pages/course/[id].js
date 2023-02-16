@@ -163,7 +163,6 @@ function Course() {
     function ModuleHandler(item,id) {
         setActive(id)
         setModuleId(item.id)
-        console.log(item,"course");
         dispatch(getModule(item.id))
     }
 
@@ -226,7 +225,7 @@ function Course() {
         setEditModuleLessonIndex('')
         setEditModal(false)
     }
-
+    
     if(courseStatus === "succeeded"){
         return (
             <Box>
