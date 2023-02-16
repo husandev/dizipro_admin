@@ -168,7 +168,7 @@ function Users() {
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >{item.created_at.slice(0,10)}</TableCell>
                                                 <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>
-                                                <TableCell className='rowBorderMiddle' >+{item.phone_number.slice(0,3)} ({item.phone_number.slice(3,5)}) {item.phone_number.slice(5,8)}-{item.phone_number.slice(8,10)}-{item.phone_number.slice(10,12)}</TableCell>
+                                                <TableCell className='rowBorderMiddle' >+{item.phone_number}</TableCell>
                                                 <TableCell className='rowBorderEnd' >
                                                     <Box sx={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                                                         <CustomTypegraphy className="table__text" variant={"span"} text={`2 ta`} />
@@ -193,7 +193,7 @@ function Users() {
                                                 </TableCell>
                                                 <TableCell className='rowBorderMiddle' >{item.created_at.slice(0,10)}</TableCell>
                                                 <TableCell className='rowBorderMiddle' >548 000 UZS</TableCell>
-                                                <TableCell className='rowBorderMiddle' >+{item.phone_number.slice(0,3)} ({item.phone_number.slice(3,5)}) {item.phone_number.slice(5,8)}-{item.phone_number.slice(8,10)}-{item.phone_number.slice(10,12)}</TableCell>
+                                                <TableCell className='rowBorderMiddle' >+{item.phone_number}</TableCell>
                                                 <TableCell className='rowBorderEnd' >
                                                     <Box sx={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                                                         <CustomTypegraphy className="table__text" variant={"span"} text={`2 ta`} />
