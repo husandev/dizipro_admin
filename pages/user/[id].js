@@ -18,6 +18,7 @@ import CustomInput from '../../src/Copmonents/CustomInput'
 import { updateUser } from '../../src/Slices/update_user'
 import { blockUnblock, blockUser } from '../../src/Slices/block_user'
 import { unBlockUser } from '../../src/Slices/unblock_user'
+import { deleteUser } from '../../src/Slices/delete_user'
 
 const style = {
     position: 'absolute',
@@ -161,6 +162,11 @@ function User() {
         }
         setRefresh(!refresh)
     }
+    
+    function DeleteUser() {
+        dispatch(deleteUser(router.query.id))
+        router.push('/users')
+    }
 
     if(get_user_status === "succeeded"){
         return (   
@@ -248,6 +254,9 @@ function User() {
                         </Box>
                         <Box sx={{display:'flex',alignItems:"center"}}>
                             <Box  sx={{marginRight:"10px"}}>
+                                <Button sx={{marginRight:'10px'}} variant="outlined" color="error" onClick={DeleteUser} >
+                                    O'chirish
+                                </Button>
                                 {
                                     SingleUser?.is_blocked ? 
                                         <Button variant="outlined" onClick={()=> UpdateUserBlock(false)}  >
@@ -258,6 +267,7 @@ function User() {
                                             Bloklash
                                         </Button>
                                 }
+                        
                               
                             </Box>
                             <Box onClick={()=> setEditModal(true)}>

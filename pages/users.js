@@ -89,7 +89,6 @@ function Users() {
     );
 
     function searchHandler(val) {
-
         dispatch(searchUser(val))
     }
 
@@ -157,7 +156,6 @@ function Users() {
                                             <StyledRow
                                                 onClick={()=> router.push(`user/${item.user_id}`)}
                                                 key={item.user_id}
-                                                
                                             > 
                                                 <TableCell className='rowBorderStart'  sx={{display:"flex",alignItems:"center"}} >
                                                     <StyledUserName sx={(i + 1) % 2 === 0 ? {background:"#738dbf "} : {background:"#ab73bf"} } >{item.first_name.slice(0,1)}</StyledUserName>

@@ -21,6 +21,8 @@ import { reducer as update_user} from "../Slices/update_user"
 import { reducer as block_user} from "../Slices/block_user"
 import { reducer as unblock_user} from "../Slices/unblock_user"
 import { reducer as update_module} from "../Slices/update_module"
+import { reducer as delete_user} from "../Slices/delete_user"
+
 
 
 const rootReducer = combineReducers({
@@ -46,6 +48,7 @@ const rootReducer = combineReducers({
     block_user,
     unblock_user,
     update_module,
+    delete_user
 })
 
 export default rootReducer  
