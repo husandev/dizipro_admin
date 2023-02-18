@@ -118,11 +118,11 @@ function Course() {
     const [updateLessonId,setUpdateLessonId] = useState('')
     const [updateModal,setUpdateModal] = useState(false)
     const [editModal,setEditModal] = useState(false)
-
     const [editModuleTitle,setEditModuleTitle] = useState('')
     const [editModuleDesc,setEditModuleDesc] = useState('')
     const [editModuleLessonCount,setEditModuleLessonCount] = useState('')
     const [editModuleIndex,setEditModuleLessonIndex] = useState('')
+    const UpdateModulStatus = useSelector((state) => state.update_module.status)
 
     const CloseUpdateModal = () => {
         setUpdateModal(false);
@@ -141,7 +141,7 @@ function Course() {
             // router.reload(router.pathname)
         }
   
-    },[router.query.id])
+    },[router.query.id,UpdateModulStatus])
 
 
 
@@ -205,19 +205,17 @@ function Course() {
 
     function UpdateModul(e) {
         e.preventDefault()
-        if(editModuleTitle && editModuleDesc && editModuleLessonCount && editModuleIndex){
-            dispatch(updateModule(
-                {
-                    id:moduleId,
-                    body: {
-                        title:editModuleTitle,
-                        description:editModuleDesc,
-                        lessons_count:editModuleLessonCount,
-                        index:editModuleIndex
-                    }
+        dispatch(updateModule(
+            {
+                id:moduleId,
+                body: {
+                    title:editModuleTitle ? editModuleTitle : Module?.data[0]?.data?.title,
+                    description:editModuleDesc ? editModuleDesc : Module?.data[0]?.data?.description,
+                    lessons_count:editModuleLessonCount ? editModuleLessonCount : Module?.data[0]?.data?.lessons_count.toString(),
+                    index:editModuleIndex ? editModuleIndex : Module?.data[0]?.data?.index.toString()
                 }
-               ))
-        }
+            }
+        ))
     
         setEditModuleTitle("")
         setEditModuleDesc("")
