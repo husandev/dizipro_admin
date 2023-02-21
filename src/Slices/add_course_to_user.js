@@ -6,8 +6,8 @@ const initialState = {
     status: 'idle',
     error: null,
 };
-export const AddCourseToUser = createAsyncThunk(`api/courses/user`, async(obj)=>{
-  const response = await instance.post(`api/courses/user`,
+export const AddCourseToUser = createAsyncThunk(`api/courses/admin/user`, async(obj)=>{
+  const response = await instance.post(`api/courses/admin/user`,
    obj
   )
   return response.data
