@@ -24,7 +24,7 @@ const SidebarLayout = ({ children }) => {
     let token = localStorage.getItem('token')
     console.log(token);
     if(!token){
-      router.push('/login')
+      // router.push('/login')
     }
   },[])
  
