@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useDispatch,useSelector } from 'react-redux';
 import instance from '../axios';
 import { toast, ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 function Login() {
 
@@ -19,10 +20,16 @@ function Login() {
     const [succes,setSucces] = useState(false)
     const [message,setMessage] = useState('')
     const [loading,setLoading] = useState(true)
-    
+    const router = useRouter()
     const dispatch = useDispatch()
 
-   
+    useEffect(() => {
+        let token = localStorage.getItem('token')
+        console.log(token);
+        if(token){
+            router.push('/courses')
+        }
+    },[])
 
     function SignUpHandler(e) {
         e.preventDefault()

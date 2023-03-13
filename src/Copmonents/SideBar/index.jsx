@@ -67,6 +67,11 @@ function SideBar() {
     function SideBarItemHandler(el) {
         setActive(el.id)
         router.push(el.link)
+        let token = localStorage.getItem('token')
+        console.log(token);
+        if(!token){
+            router.push('/login')
+        }
     }
 
     return (
