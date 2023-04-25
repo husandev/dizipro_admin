@@ -26,24 +26,22 @@ function Login() {
     useEffect(() => {
         let token = localStorage.getItem('token')
         console.log(token);
-        if(token){
-            router.push('/courses')
-        }
+        // if(token){
+        //     router.push('/courses')
+        // }
     },[])
 
-    function SignUpHandler(e) {
+    function SignInHandler(e) {
         e.preventDefault()
         const config = {
             onUploadProgress: (progressEvent) => setLoading(progressEvent?.event?.isTrusted)
           };
 
-        if(surName && userName && phoneNumber){
+        if(phoneNumber){
             setLoading(false)
-            instance.post('api/auth/signup',
+            instance.post('api/auth/signin',
                 {
-                    first_name:userName,
                     phone_number:phoneNumber,
-                    last_name:surName
                 },config
             )
            
@@ -79,7 +77,9 @@ function Login() {
             }
             )
             .then((response) => {
-                console.log(response);
+                console.log(response?.data?.data?.tokens?.accessToken);
+                localStorage.setItem("token",response?.data?.data?.tokens?.accessToken)
+                router.push("courses")
             })
             .catch((er) => {
                 console.log(er);
@@ -158,15 +158,15 @@ function Login() {
                                         </Box>
                                         
                                     </Box>
-                                    <form onSubmit={SignUpHandler}>
-                                        <Box sx={{display:"flex"}}>
+                                    <form onSubmit={SignInHandler}>
+                                        {/* <Box sx={{display:"flex"}}>
                                             <Box sx={{width:"50%"}}>
                                                 <CustomInput type={"text"} val={userName} handleChange={setUserName} label_text={"Ism"} placeholder="Ism"/>
                                             </Box>
                                             <Box sx={{width:"50%",paddingLeft:"10px"}}>
                                                 <CustomInput type={"text"} val={surName} handleChange={setLastName} label_text={"Familya"} placeholder="Familya"/>
                                             </Box>
-                                        </Box>
+                                        </Box> */}
                                         <CustomInput type={"number"} val={phoneNumber} handleChange={setPhoneNumber} label_text={"Telefon raqam"} placeholder="+998"/>
                                         {
                                             loading ?  <CustomBtn class="login__btn" text="Akkaunt ochish"/> :  

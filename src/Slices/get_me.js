@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import instance from '../../axios';
-
 const initialState = {
     data: [],
     status: 'idle',
@@ -8,6 +7,7 @@ const initialState = {
 };
 export const getMe = createAsyncThunk(`api/users/me`, async(token)=>{
   const response = await instance.get(`api/users/me`,{token})
+  console.log(response,"response");
   return response.data
 }) ;
 
@@ -40,6 +40,7 @@ const get_me = createSlice({
           state.status = 'failed'
           state.error = action.error.message
           console.log(action.error.message)
+       
         })
       }
   });
