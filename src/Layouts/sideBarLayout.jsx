@@ -38,7 +38,7 @@ const SidebarLayout = ({ children }) => {
     })
     .catch((er) => {
         console.log(er?.response?.data?.message);
-        if(er?.response?.data?.message === "jwt expired"){
+        if(er?.response?.data?.message === "jwt expired" || er?.response?.data?.message === "jwt malformed"){
           router.push("/login")
         }
     })
