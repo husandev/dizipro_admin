@@ -15,7 +15,7 @@ const SidebarLayout = ({ children }) => {
   const getMeStatus = useSelector((state) => state)
 
   useEffect(()=> {
-    
+    console.log(router.pathname);
     if(typeof window !== "undefined"){
       console.log(window.location.pathname);
       if(window.location.pathname !== "/login" || window.location.pathname !== "/courses"){
@@ -51,10 +51,10 @@ console.log(path);
   return (
     <>
       {
-        path ?  <SideBar /> : null
+        router.pathname !== "/login" ?  <SideBar /> : null
       }
      
-      <Box sx={path ? {padding:"40px 48px 0 124px"} : null}>
+      <Box sx={router.pathname !== "/login" ? {padding:"40px 48px 0 124px"} : null}>
           {children}
       </Box>
     </>
